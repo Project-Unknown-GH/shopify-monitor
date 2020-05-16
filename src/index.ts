@@ -59,28 +59,33 @@ const compareTags = (arr1: string[], arr2: string[]): boolean => {
     return true;
 };
 
-const compareProducts = (oldProduct: Product, newProduct: Product) => {
-    for (const i in oldProduct) {
-        switch (i) {
-            case "tags":
-                if (!compareTags(oldProduct[i], newProduct[i])) {
-                    return false;
-                }
-                break;
-            case "variants":
-                if (!compareVariantArr(oldProduct[i], newProduct[i])) {
-                    return false;
-                }
-                break;
-            default:
-                if (oldProduct[i] !== newProduct[i]) {
-                    return false;
-                }
-        }
-    }
+const compareProducts = (oldProduct: Product, newProduct: Product): boolean => {
+    return oldProduct.id === newProduct.id;
+    // for (const i in oldProduct) {
+    //     switch (i) {
+    //         case "tags":
+    //             if (!compareTags(oldProduct[i], newProduct[i])) {
+    //                 return false;
+    //             }
+    //             break;
+    //         case "variants":
+    //             if (!compareVariantArr(oldProduct[i], newProduct[i])) {
+    //                 return false;
+    //             }
+    //             break;
+    //         default:
+    //             if (oldProduct[i] !== newProduct[i]) {
+    //                 return false;
+    //             }
+    //     }
+    // }
+    console.table([oldProduct, newProduct]);
+    console.log("ITS A MATCH!!!")
     return true;
 };
 
 const productInArr = (product: Product, arr: Product[]): boolean => {
-    return arr.filter(l => compareProducts(product, l)).length !== 0;
+    return !!arr.find(l => compareProducts(l, product));
 };
+
+export { Product, productInArr, compareProducts }
