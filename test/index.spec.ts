@@ -1,6 +1,47 @@
 import * as assert from "assert";
 import { compareProducts, productInArr } from "../src";
-import { diffArrs } from "../src/diff";
+import { diffArrs, diffVariantArr } from "../src/diff";
+
+const variants = [
+    {
+        "id": 2,
+        "title": "Default Title",
+        "option1": "Default Title",
+        "option2": null,
+        "option3": null,
+        "sku": "CSX2006",
+        "requires_shipping": true,
+        "taxable": true,
+        "featured_image": null,
+        "available": true,
+        "price": "194.96",
+        "grams": 3175,
+        "compare_at_price": "259.95",
+        "position": 1,
+        "product_id": 12345,
+        "created_at": "2018-11-06T12:20:45-05:00",
+        "updated_at": "2020-05-15T07:37:35-04:00",
+    },
+    {
+        "id": 2,
+        "title": "Default Title",
+        "option1": "Default Title",
+        "option2": null,
+        "option3": null,
+        "sku": "CSX2006",
+        "requires_shipping": true,
+        "taxable": true,
+        "featured_image": null,
+        "available": false,
+        "price": "194.96",
+        "grams": 3175,
+        "compare_at_price": "259.95",
+        "position": 1,
+        "product_id": 12345,
+        "created_at": "2018-11-06T12:20:45-05:00",
+        "updated_at": "2020-05-15T07:37:35-04:00",
+    },
+];
 
 const basic1 = {
     "id": 1,
@@ -16,25 +57,7 @@ const basic1 = {
         "category-fake",
     ],
     "variants": [
-        {
-            "id": 2,
-            "title": "Default Title",
-            "option1": "Default Title",
-            "option2": null,
-            "option3": null,
-            "sku": "CSX2006",
-            "requires_shipping": true,
-            "taxable": true,
-            "featured_image": null,
-            "available": true,
-            "price": "194.96",
-            "grams": 3175,
-            "compare_at_price": "259.95",
-            "position": 1,
-            "product_id": 12345,
-            "created_at": "2018-11-06T12:20:45-05:00",
-            "updated_at": "2020-05-15T07:37:35-04:00",
-        },
+        variants[0]
     ],
     "images": [
         {
@@ -74,25 +97,7 @@ const basic2 = {
         "category-fake",
     ],
     "variants": [
-        {
-            "id": 2,
-            "title": "Default Title",
-            "option1": "Default Title",
-            "option2": null,
-            "option3": null,
-            "sku": "CSX2006",
-            "requires_shipping": true,
-            "taxable": true,
-            "featured_image": null,
-            "available": true,
-            "price": "194.96",
-            "grams": 3175,
-            "compare_at_price": "259.95",
-            "position": 1,
-            "product_id": 12345,
-            "created_at": "2018-11-06T12:20:45-05:00",
-            "updated_at": "2020-05-15T07:37:35-04:00",
-        },
+        variants[1]
     ],
     "images": [
         {
@@ -137,12 +142,27 @@ describe("Diff test suite", () => {
         })
     });
 
-    describe("Diffing arrays", () => {
-        it("Should work with additions", () => {
-            assert.deepEqual(diffArrs([basic2], [basic1, basic2]), [{type: "add", val: basic1}]);
+    describe("Diffing variants", () => {
+        it("Should work with restocks", () => {
+            assert.deepEqual(diffVariantArr([variants[1]], [variants[0]]), [{type: "restock", variant: variants[0]}]);
         });
         it("Should work with removals", () => {
-            assert.deepEqual(diffArrs([basic2, basic1], [basic1]), [{type: "remove", index: 0}]);
+            assert.deepEqual(diffVariantArr([variants[0]], [variants[1]]), [{type: "sellout", variant: variants[1]}]);
         });
-    })
+        it("Should work with nothing", () => {
+            assert.deepEqual(diffVariantArr([variants[0]], [variants[0]]), []);
+        });
+    });
+
+    describe("Diffing products", () => {
+        it("Should work with sellouts", () => {
+            assert.deepEqual(diffArrs([basic1], [basic2]), [{type: "sellout", variant: variants[1], parent: basic2}]);
+        });
+        it("Should work with restocks", () => {
+            assert.deepEqual(diffArrs([basic2], [basic1]), [{type: "restock", variant: variants[0], parent: basic1}]);
+        });
+        it("Should work with nothing", () => {
+            assert.deepEqual(diffArrs([basic2], [basic2]), []);
+        });
+    });
 });
