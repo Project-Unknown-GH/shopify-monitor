@@ -33,59 +33,15 @@ interface Variant {
 }
 
 const compareVariants = (oldVariant: Variant, newVariant: Variant): boolean => {
-    for (const i in oldVariant) {
-        if (oldVariant[i] !== newVariant[i]) {
-            return false;
-        }
-    }
-    return true;
-};
-
-const compareVariantArr = (arr1: Variant[], arr2: Variant[]): boolean => {
-    for (const i in arr1) {
-        if (!compareVariants(arr1[i], arr2[i])) {
-            return false;
-        }
-    }
-    return true;
-};
-
-const compareTags = (arr1: string[], arr2: string[]): boolean => {
-    for (const i in arr1) {
-        if (arr1[i] !== arr2[i]) {
-            return false;
-        }
-    }
-    return true;
+    return oldVariant.available !== newVariant.available;
 };
 
 const compareProducts = (oldProduct: Product, newProduct: Product): boolean => {
     return oldProduct.id === newProduct.id;
-    // for (const i in oldProduct) {
-    //     switch (i) {
-    //         case "tags":
-    //             if (!compareTags(oldProduct[i], newProduct[i])) {
-    //                 return false;
-    //             }
-    //             break;
-    //         case "variants":
-    //             if (!compareVariantArr(oldProduct[i], newProduct[i])) {
-    //                 return false;
-    //             }
-    //             break;
-    //         default:
-    //             if (oldProduct[i] !== newProduct[i]) {
-    //                 return false;
-    //             }
-    //     }
-    // }
-    console.table([oldProduct, newProduct]);
-    console.log("ITS A MATCH!!!")
-    return true;
 };
 
 const productInArr = (product: Product, arr: Product[]): boolean => {
     return !!arr.find(l => compareProducts(l, product));
 };
 
-export { Product, productInArr, compareProducts }
+export { Variant, Product, productInArr, compareProducts, compareVariants }
