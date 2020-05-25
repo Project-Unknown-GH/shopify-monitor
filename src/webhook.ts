@@ -25,7 +25,6 @@ class Embed {
     }
 
     public sendEmbed = () => {
-        console.log("Sending", this.embed);
         axios({
             method: "POST",
             url: "https://discordapp.com/api/webhooks/710813058284519466/7NfyY_-rh6JinUBEuAMsn9QWPlZzbndTNi-CgF-WY9khfjsEcxOgESTbcwYtHDJ_wSSS",
@@ -88,9 +87,10 @@ class Embed {
 }
 
 const main = async (urls: string[]) => {
+    console.log(new Date());
     const fullChanges = await Promise.all(urls.map(async l => await compareData(l)));
+    console.log(`Changes: ${fullChanges.reduce((acc, cur) => acc + cur.length, 0)}`);
     for (const changes of fullChanges) {
-        console.log(`Changes: ${changes.length}`);
         if (changes.length > 0) {
             Embed.diffsToEmbeds(changes).map(l => {
                 l.sendEmbed();
@@ -108,6 +108,7 @@ const urls = [
     "https://dope-factory.com/",
 ];
 
-main(urls);
+console.log("Starting!");
+setInterval(main, 10000, urls);
 
 export { Embed, EmbedInterface };

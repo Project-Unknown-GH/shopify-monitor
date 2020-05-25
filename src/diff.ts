@@ -54,9 +54,7 @@ const diffArrs = (arr1: Product[], arr2: Product[]): Diff[] => {
 const compareData = (url: string): Promise<Diff[]> => {
     const extractedUrl = `products/${extractSiteNameFromUrl(url)}.json`;
     return new Promise(async (resolve, reject) => {
-        console.log(`Requesting: ${url}products.json`);
         const urlData: any = await axios.get(`${url}products.json?limit=999999999`);
-        console.log("Data:", urlData.data.products.length);
         const parsedUrlData: Product[] = urlData.data.products.sort((a, b) => a.id - b.id).map(l => ({...l, company_url: url}));
         if (fs.existsSync(extractedUrl)) {
             fs.readFile(extractedUrl, "utf-8", (err, data) => {
@@ -71,7 +69,6 @@ const compareData = (url: string): Promise<Diff[]> => {
                         resolve([]);
                     }
                     const diffs = diffArrs(parsedOldData, parsedUrlData);
-                    console.log(`Diffy lube ${diffs}`);
                     fs.writeFile(extractedUrl, JSON.stringify(urlData.data, null, 4), (err) => {
                         if (err) throw err;
                     });
