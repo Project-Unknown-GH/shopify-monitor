@@ -7,6 +7,7 @@ interface Product {
     created_at: string,
     updated_at: string,
     vendor: string,
+    company_url: string
     product_type: string,
     tags: Array<string>,
     variants: Array<Variant>

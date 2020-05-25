@@ -72,6 +72,7 @@ const basic1 = {
             "height": 1200,
         },
     ],
+    "company_url": "http://www.blah.com/",
     "options": [
         {
             "name": "Title",
@@ -112,6 +113,7 @@ const basic2 = {
             "height": 1200,
         },
     ],
+    "company_url": "http://www.bloo.com/",
     "options": [
         {
             "name": "Title",

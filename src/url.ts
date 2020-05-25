@@ -1,4 +1,5 @@
 const extractSiteNameFromUrl = (url: string) => {
+    console.log(`Extracting from ${url}`);
     let domain = url.indexOf("://") > -1 ? url.split('/')[2] : url.split('/')[0];
 
     if (domain.indexOf("www.") > -1) {

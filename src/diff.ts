@@ -1,6 +1,7 @@
 import { compareVariants, Product, productInArr, Variant } from "./index";
 import axios from "axios";
 import * as fs from "fs";
+import extractSiteNameFromUrl from "./url";
 
 interface Diff {
     type: "restock" | "sellout",
@@ -15,12 +16,12 @@ const diffVariantArr = (arr1: Variant[], arr2: Variant[]): Omit<Diff, "parent">[
             if (arr2[i].available) {
                 diffs.push({
                     type: "restock",
-                    variant: arr2[i]
+                    variant: arr2[i],
                 });
             } else {
                 diffs.push({
                     type: "sellout",
-                    variant: arr2[i]
+                    variant: arr2[i],
                 });
             }
         }
@@ -41,7 +42,6 @@ const checkRewrite = (arr1: Product[], arr2: Product[]): boolean => {
 };
 
 const diffArrs = (arr1: Product[], arr2: Product[]): Diff[] => {
-    // console.log(`Diffing ${arr1.length} and ${arr2.length}`);
     const diffs: Diff[] = [];
     for (const i in arr1) {
         const variantDiffs = diffVariantArr(arr1[i].variants.sort((a, b) => a.id - b.id), arr2[i].variants.sort((a, b) => a.id - b.id));
@@ -52,38 +52,46 @@ const diffArrs = (arr1: Product[], arr2: Product[]): Diff[] => {
 };
 
 const compareData = (url: string): Promise<Diff[]> => {
-    return new Promise (async (resolve, reject) => {
+    const extractedUrl = `products/${extractSiteNameFromUrl(url)}.json`;
+    return new Promise(async (resolve, reject) => {
         console.log(`Requesting: ${url}products.json`);
-        const urlData: any = await axios.get(`${url}products.json?limit=99999`);
-        const parsedUrlData = urlData.data.products.sort((a, b) => a.id - b.id);
-        fs.readFile("products.json", "utf-8", (err, data) => {
-            if (err) throw err;
-            try {
-                JSON.parse(data);
-            } catch (e) {
-                console.log("We errored");
-                console.error(e);
-                reject([]);
-            }
-            // console.log(`le data ${parsedUrlData}`);
-            const parsedOldData = JSON.parse(data).products.sort((a, b) => a.id - b.id);
-            if (checkRewrite(parsedOldData, parsedUrlData)) {
-                fs.writeFile("products.json", JSON.stringify(urlData.data, null, 4), (err) => {if (err) throw err});
-                resolve([]);
-            }
-            const diffs = diffArrs(parsedOldData, parsedUrlData);
-            console.log(`Diffy lube, ${diffs}`);
-            fs.writeFile("products.json", JSON.stringify(urlData.data, null, 4), (err) => {if (err) throw err});
-            resolve(diffs);
-        });
+        const urlData: any = await axios.get(`${url}products.json?limit=999999999`);
+        console.log("Data:", urlData.data.products.length);
+        const parsedUrlData: Product[] = urlData.data.products.sort((a, b) => a.id - b.id).map(l => ({...l, company_url: url}));
+        if (fs.existsSync(extractedUrl)) {
+            fs.readFile(extractedUrl, "utf-8", (err, data) => {
+                if (err) throw err;
+                try {
+                    const parsedData = JSON.parse(data);
+                    const parsedOldData = parsedData.products.sort((a, b) => a.id - b.id).map(l => ({...l, company_url: url}));
+                    if (checkRewrite(parsedOldData, parsedUrlData)) {
+                        fs.writeFile(extractedUrl, JSON.stringify(urlData.data, null, 4), (err) => {
+                            if (err) throw err;
+                        });
+                        resolve([]);
+                    }
+                    const diffs = diffArrs(parsedOldData, parsedUrlData);
+                    console.log(`Diffy lube ${diffs}`);
+                    fs.writeFile(extractedUrl, JSON.stringify(urlData.data, null, 4), (err) => {
+                        if (err) throw err;
+                    });
+                    resolve(diffs);
+                } catch (e) {
+                    console.log("We errored");
+                    console.error(e);
+                    fs.writeFile(extractedUrl, JSON.stringify(urlData.data, null, 4), (err) => {
+                        if (err) throw err;
+                    });
+                    reject([]);
+                }
+            });
+        } else {
+            console.log("nonexistent");
+            fs.writeFile(extractedUrl, JSON.stringify(urlData.data, null, 4), (err) => {
+                if (err) throw err;
+            });
+        }
     });
 };
 
-const main = async () => {
-    console.log("Result:");
-    console.log("the end", (await compareData("https://www.ugmonk.com/")).length);
-};
-
-main();
-
-export { diffArrs, diffVariantArr }
+export { diffArrs, diffVariantArr, compareData, Diff };
