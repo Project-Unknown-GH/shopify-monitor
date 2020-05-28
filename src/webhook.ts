@@ -29,7 +29,7 @@ class Embed {
             method: "POST",
             url: this.webhookUrl,
             data: {
-                username: "ShopifyMonitor",
+                username: "Unknown",
                 embeds: [this.embed],
             },
         })
@@ -66,7 +66,7 @@ class Embed {
                 },
                 {
                     name: "Link",
-                    value: `[Click here](${diff.parent.company_url}/product/${diff.parent.handle})`,
+                    value: `[Click here](${diff.parent.company_url}products/${diff.parent.handle})`,
                     inline: true,
                 },
                 {
