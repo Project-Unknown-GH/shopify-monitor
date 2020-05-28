@@ -21,16 +21,15 @@ interface EmbedInterface {
 }
 
 class Embed {
-    constructor (public embed: EmbedInterface) {
+    constructor (public embed: EmbedInterface, public webhookUrl: string) {
     }
 
     public sendEmbed = () => {
         axios({
             method: "POST",
-            url: "https://discordapp.com/api/webhooks/710813058284519466/7NfyY_-rh6JinUBEuAMsn9QWPlZzbndTNi-CgF-WY9khfjsEcxOgESTbcwYtHDJ_wSSS",
+            url: this.webhookUrl,
             data: {
                 username: "ShopifyMonitor",
-                avatar_url: "https://lh3.googleusercontent.com/proxy/9zW0ZlyKMfZgpEwTs4zKxjC9kjd40IgQHZnZoPXBjbO_idOWgrqGdyzUukE45BnGR5f7IPIDSXQ7RTQbkZruOpVkG1_s198",
                 embeds: [this.embed],
             },
         })
@@ -39,7 +38,7 @@ class Embed {
             });
     };
 
-    public static diffsToEmbeds = (diffs: Diff[]) => {
+    public static diffsToEmbeds = (diffs: Diff[], url: string) => {
         const embeds = [];
         for (const diff of diffs) {
             const color = 0x008080;
@@ -82,17 +81,17 @@ class Embed {
                 fields,
             });
         }
-        return embeds.map(l => new Embed(l));
+        return embeds.map(l => new Embed(l, url));
     };
 }
 
-const main = async (urls: string[]) => {
+const main = async (urls: string[], header: string, webhookUrl: string) => {
     console.log(new Date());
-    const fullChanges = await Promise.all(urls.map(async l => await compareData(l)));
+    const fullChanges = await Promise.all(urls.map(async l => await compareData(header, l)));
     console.log(`Changes: ${fullChanges.reduce((acc, cur) => acc + cur.length, 0)}`);
     for (const changes of fullChanges) {
         if (changes.length > 0) {
-            Embed.diffsToEmbeds(changes).map(l => {
+            Embed.diffsToEmbeds(changes, webhookUrl).map(l => {
                 l.sendEmbed();
             });
         }
@@ -109,6 +108,6 @@ const urls = [
 ];
 
 console.log("Starting!");
-setInterval(main, 10000, urls);
+setInterval(main, 30000, urls, "products", "https://discordapp.com/api/webhooks/710813058284519466/7NfyY_-rh6JinUBEuAMsn9QWPlZzbndTNi-CgF-WY9khfjsEcxOgESTbcwYtHDJ_wSSS");
 
-export { Embed, EmbedInterface };
+export { Embed, EmbedInterface, main };

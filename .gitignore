@@ -1,5 +1,6 @@
 node_modules
 .idea
 src/products
+src/filtered
 src/**/*.js
 src/**/*.js.map
