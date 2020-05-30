@@ -98,6 +98,41 @@ const main = async (urls: string[], header: string, webhookUrl: string) => {
     }
 };
 
+const isSiteDown = (url: string) => {
+    return new Promise(async (resolve, reject) => {
+        let siteDown = false;
+        try {
+            await axios.get(url);
+        } catch (e) {
+            console.log(`Site down! ${e.response.status}`);
+            siteDown = true;
+            resolve(false);
+        }
+        if (!siteDown) {
+            console.log(`Site up!`);
+            resolve(true);
+        }
+    });
+};
+
+const monitorSiteStatus = (previous: boolean | null, url: string, webhook: string) => {
+    if (isSiteDown(url) && previous === true) {
+        const color = 0x008080;
+        const title = `Password page for ${extractSiteNameFromUrl(url)} is up! 🔒`;
+        const embeds = {color, title, fields: []};
+        new Embed(embeds, webhook).sendEmbed();
+        return true;
+    } else if (!isSiteDown(url) && previous === false) {
+        const color = 0x008080;
+        const title = `Password page for ${extractSiteNameFromUrl(url)} is down! 🔒`;
+        const embeds = {color, title, fields: []};
+        new Embed(embeds, webhook).sendEmbed();
+        return true;
+    } else {
+        return false;
+    }
+};
+
 const urls = [
     "https://undefeated.com/",
     "https://www.addictmiami.com/",
@@ -110,4 +145,4 @@ const urls = [
 console.log("Starting!");
 setInterval(main, 30000, urls, "products", "https://discordapp.com/api/webhooks/710813058284519466/7NfyY_-rh6JinUBEuAMsn9QWPlZzbndTNi-CgF-WY9khfjsEcxOgESTbcwYtHDJ_wSSS");
 
-export { Embed, EmbedInterface, main };
+export { Embed, EmbedInterface, main, monitorSiteStatus };

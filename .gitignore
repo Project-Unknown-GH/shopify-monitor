@@ -2,5 +2,6 @@ node_modules
 .idea
 src/products
 src/filtered
+src/cmd
 src/**/*.js
 src/**/*.js.map

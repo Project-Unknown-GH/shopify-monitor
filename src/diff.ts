@@ -54,6 +54,12 @@ const diffArrs = (arr1: Product[], arr2: Product[]): Diff[] => {
 const compareData = (header: string, url: string): Promise<Diff[]> => {
     const extractedUrl = `${header}/${extractSiteNameFromUrl(url)}.json`;
     return new Promise(async (resolve, reject) => {
+        try {
+            const urlData: any = await axios.get(`${url}products.json?limit=999999999`);
+        } catch {
+            console.log("bitsdfauisdhf");
+            reject([]);
+        }
         const urlData: any = await axios.get(`${url}products.json?limit=999999999`);
         const parsedUrlData: Product[] = urlData.data.products.sort((a, b) => a.id - b.id).map(l => ({...l, company_url: url}));
         if (fs.existsSync(extractedUrl)) {
