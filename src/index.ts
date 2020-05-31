@@ -1,3 +1,5 @@
+import { main } from "./webhook";
+
 interface Product {
     id: number,
     title: string,
