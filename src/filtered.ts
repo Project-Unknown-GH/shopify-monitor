@@ -16,4 +16,4 @@ const urls = [
 
 const webhook = "https://discordapp.com/api/webhooks/715588863904579606/l9ao9OAchPh6wSjCMXD6SgTydGZz83RMccoQYSZyc0tVEa5r8TytENBebES65EaFWMzF";
 
-urls.map(url => setInterval(main, 30000, url, "filtered", webhook));
+urls.map(url => setInterval(main, 40000, url, "filtered", webhook));

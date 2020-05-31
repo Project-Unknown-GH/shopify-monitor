@@ -3,7 +3,7 @@ import { monitorSiteStatus } from "./webhook";
 const monitorSite = (previous: boolean | null, url: string, webhook: string) => {
     const siteChanged = monitorSiteStatus(previous, url, webhook);
     console.log(`Site status: ${previous}`);
-    setTimeout(monitorSite, 30000, siteChanged ? !previous : previous, url, webhook);
+    setTimeout(monitorSite, 40000, siteChanged ? !previous : previous, url, webhook);
 };
 
 const stuff = [
