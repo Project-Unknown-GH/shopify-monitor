@@ -2,14 +2,25 @@ import { main } from "./webhook";
 
 const webhookUrls = <string[][]>[
     ["https://undefeated.com/", "https://discordapp.com/api/webhooks/716362702192377856/LhHQfaiC24w4urcH7tmkoAodQvvXx594pKLrRCBeHjfEvmtsSfayR-Dk5ppSPjUK74LD"],
-    ["https://www.addictmiami.com/"],
-    ["https://www.abovethecloudsstore.com/"],
-    ["https://www.jimmyjazz.com/"],
-    ["https://stay-rooted.com/"],
     ["https://extrabutterny.com/"],
+    ["https://stay-rooted.com/"],
+    ["https://www.deadstock.ca/"],
+    ["https://nrml.ca/"],
+    ["https://shop.havenshop.com/"],
+    ["https://www.socialstatuspgh.com/"],
+    ["https://cncpts.com/"],
+    ["https://us.bape.com/"],
+    ["https://www.jimmyjazz.com"],
+    ["https://shopnicekicks.com"],
+    ["https://www.unknwn.com/"],
+    ["https://juicestore.com/"],
+    ["https://feature.com/"],
+    ["https://www.saintalfred.com/"],
+    ["https://www.dtlr.com/"],
+    ["https://www.trophyroomstore.com/"],
+    ["https://www.noirfonce.eu/"],
     ["https://kith.com/", "https://discordapp.com/api/webhooks/716362775617863760/YreueDZ1s5bgKe6jXAXdLl84PbwdS8w7yVNVO1sP7N9E-10u5RhVLZMfS7BGqUBnBnJR"],
-    ["https://dope-factory.com/"],
-    ["https://shopnicekicks.com/collections/mens-kicks/", "https://discordapp.com/api/webhooks/716394891869028384/tRhbPnUip282e7oYpgHZJ8MhLvoVTuv-2UvLJZ_O5sXNWBiEhcn5wL2ajF0DsKO_2nUz"]
+    ["https://shopnicekicks.com/collections/mens-kicks/", "https://discordapp.com/api/webhooks/716394891869028384/tRhbPnUip282e7oYpgHZJ8MhLvoVTuv-2UvLJZ_O5sXNWBiEhcn5wL2ajF0DsKO_2nUz"],
 ];
 
 console.log("Starting!");
