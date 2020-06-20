@@ -44,7 +44,7 @@ class Embed {
         for (const diff of diffs) {
             const color = 0x008080;
             const title = `${diff.parent.company_url}`;
-            const url = `${diff.parent.company_url}products/${diff.parent.handle}`;
+            const url = `${diff.parent.company_url}`;
             const footer = {
                 text: `Project Unknown | Powered by https://discord.gg/24TqAYj | ${(new Date).toString()}`
             };
