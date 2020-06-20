@@ -67,7 +67,7 @@ class Embed {
                 },
                 {
                     name: "Status",
-                    value: `${diff.variant.available ? "Available" : "Not available"}`,
+                    value: `${diff.variant.available ? "In stock" : "Not in stock"}`,
                     inline: true,
                 },
             ];
