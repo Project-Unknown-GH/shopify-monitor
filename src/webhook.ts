@@ -45,6 +45,10 @@ class Embed {
             const color = 0x008080;
             const title = `${extractSiteNameFromUrl(diff.parent.company_url)} stock changed!`;
             const url = `${diff.parent.company_url}products/${diff.parent.handle}`;
+            const timestamp = (new Date()).toISOString();
+            const footer = {
+                text: "Project Unknown | Powered by https://discord.gg/24TqAYj"
+            };
             const fields = [
                 {
                     name: "Title",
@@ -80,7 +84,9 @@ class Embed {
                 url,
                 color,
                 fields,
-                image
+                image,
+                timestamp,
+                footer
             });
         }
         return embeds.map(l => new Embed(l, url));
