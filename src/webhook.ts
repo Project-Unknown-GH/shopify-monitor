@@ -45,15 +45,18 @@ class Embed {
             const color = 0x008080;
             const title = `${extractSiteNameFromUrl(diff.parent.company_url)} stock changed!`;
             const url = `${diff.parent.company_url}products/${diff.parent.handle}`;
-            const timestamp = (new Date()).toISOString();
             const footer = {
-                text: "Project Unknown | Powered by https://discord.gg/24TqAYj"
+                text: `Project Unknown | Powered by https://discord.gg/24TqAYj | ${(new Date).toString()}`
             };
             const fields = [
                 {
                     name: "Title",
                     value: `[**${diff.parent.title}**](${diff.parent.company_url}products/${diff.parent.handle})`,
                     inline: true,
+                },
+                {
+                    name: "SKU",
+                    value: `${diff.variant.sku}`
                 },
                 {
                     name: "Size",
@@ -85,7 +88,6 @@ class Embed {
                 color,
                 fields,
                 image,
-                timestamp,
                 footer
             });
         }
