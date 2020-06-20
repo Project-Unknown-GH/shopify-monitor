@@ -51,11 +51,6 @@ class Embed {
                     inline: true,
                 },
                 {
-                    name: "Description",
-                    value: `${diff.parent.body_html.replace(/(<[^>]*>)/g, "").replace(/\n/g, " ")}`,
-                    inline: true,
-                },
-                {
                     name: "Size",
                     value: `${diff.variant.title}`,
                     inline: true,
@@ -76,10 +71,14 @@ class Embed {
                     inline: true,
                 },
             ];
+            const image = {
+                url: diff.parent.images[0].src
+            };
             embeds.push({
                 title,
                 color,
                 fields,
+                image
             });
         }
         return embeds.map(l => new Embed(l, url));

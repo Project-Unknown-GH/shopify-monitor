@@ -12,7 +12,8 @@ interface Product {
     company_url: string
     product_type: string,
     tags: Array<string>,
-    variants: Array<Variant>
+    variants: Array<Variant>,
+    images: Array<Image>
 }
 
 interface Variant {
@@ -33,6 +34,20 @@ interface Variant {
     "product_id": number,
     "created_at": string,
     "updated_at": string
+}
+
+interface Image {
+    "id": number,
+    "created_at": string,
+    "position":number,
+    "updated_at": string,
+    "product_id":number,
+    "variant_ids":[
+
+    ],
+    "src": string,
+    "width":number,
+    "height":number
 }
 
 const compareVariants = (oldVariant: Variant, newVariant: Variant): boolean => {

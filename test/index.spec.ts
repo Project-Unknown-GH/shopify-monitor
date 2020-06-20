@@ -1,5 +1,5 @@
 import * as assert from "assert";
-import { compareProducts, productInArr } from "../src";
+import { compareProducts, Product, productInArr } from "../src";
 import { diffArrs, diffVariantArr } from "../src/diff";
 
 const variants = [
@@ -43,7 +43,7 @@ const variants = [
     },
 ];
 
-const basic1 = {
+const basic1: Product = {
     "id": 1,
     "title": "Fake Item",
     "handle": "fake-item",
@@ -72,19 +72,10 @@ const basic1 = {
             "height": 1200,
         },
     ],
-    "company_url": "http://www.blah.com/",
-    "options": [
-        {
-            "name": "Title",
-            "position": 1,
-            "values": [
-                "Default Title",
-            ]
-        }
-    ]
+    "company_url": "http://www.blah.com/"
 };
 
-const basic2 = {
+const basic2: Product = {
     "id": 2,
     "title": "Fake Item 2",
     "handle": "fake-item-2",
@@ -113,16 +104,7 @@ const basic2 = {
             "height": 1200,
         },
     ],
-    "company_url": "http://www.bloo.com/",
-    "options": [
-        {
-            "name": "Title",
-            "position": 1,
-            "values": [
-                "Default Title",
-            ]
-        }
-    ]
+    "company_url": "http://www.bloo.com/"
 };
 
 describe("Diff test suite", () => {
