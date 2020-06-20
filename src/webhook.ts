@@ -43,11 +43,12 @@ class Embed {
         const embeds = [];
         for (const diff of diffs) {
             const color = 0x008080;
-            const title = `[${extractSiteNameFromUrl(diff.parent.company_url)} stock changed!](${diff.parent.company_url}products/${diff.parent.handle})`;
+            const title = `${extractSiteNameFromUrl(diff.parent.company_url)} stock changed!`;
+            const url = `${diff.parent.company_url}products/${diff.parent.handle}`;
             const fields = [
                 {
                     name: "Title",
-                    value: `**${diff.parent.title}**`,
+                    value: `[**${diff.parent.title}**](${diff.parent.company_url}products/${diff.parent.handle})`,
                     inline: true,
                 },
                 {
@@ -76,6 +77,7 @@ class Embed {
             };
             embeds.push({
                 title,
+                url,
                 color,
                 fields,
                 image
