@@ -43,7 +43,7 @@ class Embed {
         const embeds = [];
         for (const diff of diffs) {
             const color = 0x008080;
-            const title = `${extractSiteNameFromUrl(diff.parent.company_url)} stock changed!`;
+            const title = `[${extractSiteNameFromUrl(diff.parent.company_url)} stock changed!](${diff.parent.company_url}products/${diff.parent.handle})`;
             const fields = [
                 {
                     name: "Title",
