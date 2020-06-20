@@ -5,6 +5,8 @@ const webhookUrls = <string[][]>[
     ["https://www.addictmiami.com/"],
     ["https://www.abovethecloudsstore.com/"],
     ["https://www.jimmyjazz.com/"],
+    ["https://stay-rooted.com/"],
+    ["https://extrabutterny.com/"],
     ["https://kith.com/", "https://discordapp.com/api/webhooks/716362775617863760/YreueDZ1s5bgKe6jXAXdLl84PbwdS8w7yVNVO1sP7N9E-10u5RhVLZMfS7BGqUBnBnJR"],
     ["https://dope-factory.com/"],
     ["https://shopnicekicks.com/collections/mens-kicks/", "https://discordapp.com/api/webhooks/716394891869028384/tRhbPnUip282e7oYpgHZJ8MhLvoVTuv-2UvLJZ_O5sXNWBiEhcn5wL2ajF0DsKO_2nUz"]

@@ -12,6 +12,8 @@ const urls = [
     "https://shopnicekicks.com/collections/mens-kicks/",
     "https://www.blendsus.com/collections/mens-footwear/",
     "https://shop.travisscott.com/",
+    "https://stay-rooted.com/collections/footwear/",
+    "https://extrabutterny.com/collections/footwear/"
 ];
 
 const webhook = "https://discordapp.com/api/webhooks/715588863904579606/l9ao9OAchPh6wSjCMXD6SgTydGZz83RMccoQYSZyc0tVEa5r8TytENBebES65EaFWMzF";
