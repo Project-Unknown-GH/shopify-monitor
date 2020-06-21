@@ -60,7 +60,7 @@ class Embed {
                 },
                 {
                     name: "Size",
-                    value: `${diff.variant.title}`,
+                    value: `${diff.sizes.reduce((acc, cur) => acc + cur + "\n", "")}`,
                     inline: true,
                 },
                 {
@@ -96,7 +96,6 @@ class Embed {
 }
 
 const main = async (url: string, header: string, webhookUrl: string[]) => {
-    console.log(new Date());
     const changes = await compareData(header, url);
     console.log(`Changes: ${changes.length}`);
     if (changes.length > 0) {

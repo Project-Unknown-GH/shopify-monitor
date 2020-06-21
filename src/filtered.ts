@@ -7,7 +7,6 @@ const urls = [
     "https://nrml.ca/collections/nrml-footwear/",
     "https://shop.havenshop.com/collections/footwear/",
     "https://www.socialstatuspgh.com/collections/sneakers/",
-    "https://cncpts.com/collections/footwear/",
     "https://eflash.doverstreetmarket.com/",
     "https://www.unknwn.com/collections/footwear/",
     "https://juicestore.com/collections/footwear/",
@@ -20,4 +19,4 @@ const urls = [
 
 const webhook = "https://discordapp.com/api/webhooks/715588863904579606/l9ao9OAchPh6wSjCMXD6SgTydGZz83RMccoQYSZyc0tVEa5r8TytENBebES65EaFWMzF";
 
-urls.map(url => setInterval(main, 40000, url, "filtered", [webhook]));
+urls.map(url => setInterval(main, 20000, url, "filtered", [webhook]));

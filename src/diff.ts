@@ -6,27 +6,27 @@ import extractSiteNameFromUrl from "./url";
 interface Diff {
     type: "restock" | "sellout",
     parent: Product,
-    variant: Variant
+    variant: Variant,
+    sizes: string[]
 }
 
-const diffVariantArr = (arr1: Variant[], arr2: Variant[]): Omit<Diff, "parent">[] => {
-    const diffs: Omit<Diff, "parent">[] = [];
+const diffVariantArr = (arr1: Variant[], arr2: Variant[]): Omit<Diff, "parent"> => {
+    let diff: Omit<Diff, "parent"> = null;
     for (const i in arr1) {
         if (compareVariants(arr1[i], arr2[i])) {
-            if (arr2[i].available) {
-                diffs.push({
+            console.log("DIFFERENT LOL")
+            if (diff === null) {
+                diff = {
                     type: "restock",
                     variant: arr2[i],
-                });
+                    sizes: [arr2[i].title]
+                };
             } else {
-                diffs.push({
-                    type: "sellout",
-                    variant: arr2[i],
-                });
+                diff.sizes.push(arr2[i].title);
             }
         }
     }
-    return diffs;
+    return diff;
 };
 
 const checkRewrite = (arr1: Product[], arr2: Product[]): boolean => {
@@ -44,10 +44,13 @@ const checkRewrite = (arr1: Product[], arr2: Product[]): boolean => {
 const diffArrs = (arr1: Product[], arr2: Product[]): Diff[] => {
     const diffs: Diff[] = [];
     for (const i in arr1) {
-        const variantDiffs = diffVariantArr(arr1[i].variants.sort((a, b) => a.id - b.id), arr2[i].variants.sort((a, b) => a.id - b.id));
-        const fullDiffs: Diff[] = variantDiffs.map(l => ({...l, parent: arr2[i]}));
-        diffs.push(...fullDiffs);
+        const variantDiff = diffVariantArr(arr1[i].variants.sort((a, b) => a.id - b.id), arr2[i].variants.sort((a, b) => a.id - b.id));
+        if (variantDiff) {
+            const fullDiff: Diff = {...variantDiff, parent: arr2[i]};
+            diffs.push(fullDiff);
+        }
     }
+    // console.log(`Diff COUNT: `, diffs)
     return diffs;
 };
 
@@ -60,7 +63,7 @@ const compareData = (header: string, url: string): Promise<Diff[]> => {
                 url: `${url}products.json?limit=999999999`,
             });
         } catch {
-            console.log("bitsdfauisdhf");
+            console.log(`Something went wrong with getting products.json! The url was ${url}`);
             reject([]);
         }
         const urlData: any = await axios({
