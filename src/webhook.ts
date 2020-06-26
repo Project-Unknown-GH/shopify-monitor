@@ -46,7 +46,7 @@ class Embed {
             const title = `${diff.parent.company_url}`;
             const url = `${diff.parent.company_url}`;
             const footer = {
-                text: `Project Unknown | Powered by https://discord.gg/24TqAYj | ${(new Date).toString()}`
+                text: `Project Unknown | Powered by https://discord.gg/24TqAYj | ${new Date().toLocaleString("en-US", {timeZone: "America/New_York"})}`
             };
             const fields = [
                 {
