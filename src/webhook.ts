@@ -1,6 +1,7 @@
 import axios from "axios";
 import { compareData, Diff } from "./diff";
 import extractSiteNameFromUrl from "./url";
+const httpsProxyAgent = require("https-proxy-agent");
 
 interface EmbedField {
     name: string,
@@ -84,7 +85,7 @@ class Embed {
             };
             embeds.push({
                 title,
-                url,
+		url,
                 color,
                 fields,
                 image,
@@ -95,8 +96,8 @@ class Embed {
     };
 }
 
-const main = async (url: string, header: string, webhookUrl: string[]) => {
-    const changes = await compareData(header, url);
+const main = async (url: string, header: string, webhookUrl: string[], filters: string[] = []) => {
+    const changes = await compareData(header, url, filters);
     console.log(`Changes: ${changes.length}`);
     if (changes.length > 0) {
         webhookUrl.map(url => Embed.diffsToEmbeds(changes, url).map(l => {
@@ -105,11 +106,13 @@ const main = async (url: string, header: string, webhookUrl: string[]) => {
     }
 };
 
-const isSiteDown = (url: string) => {
+const isSiteDown = (url: string, proxy: string) => {
+    const agent = new httpsProxyAgent(proxy);
     return new Promise(async (resolve, reject) => {
         let siteDown = false;
         try {
-            await axios.get(url);
+            const resp = await axios.request({url, httpsAgent: agent});
+	    console.log(`Status: ${resp.status}`);
         } catch (e) {
             console.log(`Site down! ${e.response.status}`);
             siteDown = true;
@@ -122,15 +125,15 @@ const isSiteDown = (url: string) => {
     });
 };
 
-const monitorSiteStatus = (previous: boolean | null, url: string, webhook: string) => {
+const monitorSiteStatus = (previous: boolean | null, url: string, webhook: string, proxy: string) => {
     console.log(`Monitioring ${url}`)
-    if (isSiteDown(url) && previous === true) {
+    if (isSiteDown(url, proxy) && previous === true) {
         const color = 0x008080;
         const title = `Password page for ${extractSiteNameFromUrl(url)} is up! 🔒`;
         const embeds = {color, title, fields: []};
         new Embed(embeds, webhook).sendEmbed();
         return true;
-    } else if (!isSiteDown(url) && previous === false) {
+    } else if (!isSiteDown(url, proxy) && previous === false) {
         const color = 0x008080;
         const title = `Password page for ${extractSiteNameFromUrl(url)} is down! 🔒`;
         const embeds = {color, title, fields: []};

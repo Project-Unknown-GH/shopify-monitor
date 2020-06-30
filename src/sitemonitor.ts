@@ -1,15 +1,17 @@
 import { monitorSiteStatus } from "./webhook";
 
-const monitorSite = (previous: boolean | null, url: string, webhook: string) => {
-    const siteChanged = monitorSiteStatus(previous, url, webhook);
+const monitorSite = (previous: boolean | null, url: string, webhook: string, proxy: string) => {
+    const siteChanged = monitorSiteStatus(previous, url, webhook, proxy);
     console.log(`Site status: ${previous}`);
-    setTimeout(monitorSite, 40000, siteChanged ? !previous : previous, url, webhook);
+    setTimeout(monitorSite, 10000, siteChanged ? !previous : previous, url, webhook, proxy);
 };
 
 const stuff = [
-    ["https://eflash-us.doverstreetmarket.com/", "https://discordapp.com/api/webhooks/716363146499063870/TzmRSsNnQJTK_u-JWtbinWHMMRZyEzeE9M4ET4Iragh54cIMuKx-VNxTwR2SRADLcK33"],
-    ["https://shop.travisscott.com/", "https://discordapp.com/api/webhooks/716362929804542004/gdi4O-DFuwLIHkGXK8hilG85Wmz5ulIjLMQMzLyHf_aCwoT7MvR2FEh4fIQS9osXalYw"]
+    ["https://eflash-us.doverstreetmarket.com/", "https://discord.com/api/webhooks/726133952469008397/aENg94lwsRmsCTVuKkOqZmcagZdschiCKdzzzoeBSDUMbKYoPVCvFiaV62ik3ST6-iSc"],
+    ["https://shop.travisscott.com/", "https://discord.com/api/webhooks/726133952469008397/aENg94lwsRmsCTVuKkOqZmcagZdschiCKdzzzoeBSDUMbKYoPVCvFiaV62ik3ST6-iSc"]
 ];
 
-stuff.map(l => monitorSite(null, l[0], l[1]));
+const proxy = "http://Ghd897!a65:dSPCGH3p@51.81.97.125:33128"
+
+stuff.map(l => monitorSite(null, l[0], l[1], proxy));
 

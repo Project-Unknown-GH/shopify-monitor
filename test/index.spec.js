@@ -1,8 +1,9 @@
-import * as assert from "assert";
-import { compareProducts, Product, productInArr } from "../src";
-import { diffArrs, diffVariantArr, filterProducts } from "../src/diff";
-
-const variants = [
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var assert = require("assert");
+var src_1 = require("../src");
+var diff_1 = require("../src/diff");
+var variants = [
     {
         "id": 2,
         "title": "Default Title",
@@ -42,8 +43,7 @@ const variants = [
         "updated_at": "2020-05-15T07:37:35-04:00",
     },
 ];
-
-const basic1: Product = {
+var basic1 = {
     "id": 1,
     "title": "Unreal Item",
     "handle": "fake-item",
@@ -74,8 +74,7 @@ const basic1: Product = {
     ],
     "company_url": "http://www.blah.com/"
 };
-
-const basic2: Product = {
+var basic2 = {
     "id": 2,
     "title": "Fake Item 2",
     "handle": "fake-item-2",
@@ -106,63 +105,59 @@ const basic2: Product = {
     ],
     "company_url": "http://www.bloo.com/"
 };
-
-describe("Diff test suite", () => {
-    describe("Comparisons", () => {
-        it("Should test the compareProducts function for true", () => {
-            assert.equal(compareProducts(basic1, basic1), true);
+describe("Diff test suite", function () {
+    describe("Comparisons", function () {
+        it("Should test the compareProducts function for true", function () {
+            assert.equal(src_1.compareProducts(basic1, basic1), true);
         });
-        it("Should test the compareProducts function for false", () => {
-            assert.equal(compareProducts(basic1, basic2), false);
-        });
-    });
-
-    describe("Product in array", () => {
-        it("Should return true", () => {
-            assert.equal(productInArr(basic1, [basic1, basic2]), true);
-        });
-        it("Should return false", () => {
-            assert.equal(productInArr(basic1, [basic2]), false);
-        })
-    });
-
-    describe("Diffing variants", () => {
-        it("Should work with restocks", () => {
-            assert.deepEqual(diffVariantArr([variants[1]], [variants[0]]), [{type: "restock", variant: variants[0]}]);
-        });
-        it("Should work with removals", () => {
-            assert.deepEqual(diffVariantArr([variants[0]], [variants[1]]), [{type: "sellout", variant: variants[1]}]);
-        });
-        it("Should work with nothing", () => {
-            assert.deepEqual(diffVariantArr([variants[0]], [variants[0]]), []);
+        it("Should test the compareProducts function for false", function () {
+            assert.equal(src_1.compareProducts(basic1, basic2), false);
         });
     });
-
-    describe("Diffing products", () => {
-        it("Should work with sellouts", () => {
-            assert.deepEqual(diffArrs([basic1], [basic2]), [{type: "sellout", variant: variants[1], parent: basic2}]);
+    describe("Product in array", function () {
+        it("Should return true", function () {
+            assert.equal(src_1.productInArr(basic1, [basic1, basic2]), true);
         });
-        it("Should work with restocks", () => {
-            assert.deepEqual(diffArrs([basic2], [basic1]), [{type: "restock", variant: variants[0], parent: basic1}]);
-        });
-        it("Should work with nothing", () => {
-            assert.deepEqual(diffArrs([basic2], [basic2]), []);
+        it("Should return false", function () {
+            assert.equal(src_1.productInArr(basic1, [basic2]), false);
         });
     });
-	
-    describe("Filtering product arrays", () => {
-	it("Should not filter out common words", () => {
-	    console.log(filterProducts);
-	    assert.deepEqual(filterProducts([basic1, basic2], ["item"]), [basic1, basic2]);
-	});
-	it("Should filter out unique words", () => {
-	    assert.deepEqual(filterProducts([basic1, basic2], ["unreal"]), [basic1]);
-	});
-	it("Should work with multiple words", () => {
-	    assert.deepEqual(filterProducts([basic1, basic2], ["unreal", "fake"]), [basic1, basic2]);
-	});
-	it("Should work with tags", () => {
-	    assert.deepEqual(filterProducts([basic1, basic2], ["category-fake"]), [basic1, basic2]);
-	});
+    describe("Diffing variants", function () {
+        it("Should work with restocks", function () {
+            assert.deepEqual(diff_1.diffVariantArr([variants[1]], [variants[0]]), [{ type: "restock", variant: variants[0] }]);
+        });
+        it("Should work with removals", function () {
+            assert.deepEqual(diff_1.diffVariantArr([variants[0]], [variants[1]]), [{ type: "sellout", variant: variants[1] }]);
+        });
+        it("Should work with nothing", function () {
+            assert.deepEqual(diff_1.diffVariantArr([variants[0]], [variants[0]]), []);
+        });
+    });
+    describe("Diffing products", function () {
+        it("Should work with sellouts", function () {
+            assert.deepEqual(diff_1.diffArrs([basic1], [basic2]), [{ type: "sellout", variant: variants[1], parent: basic2 }]);
+        });
+        it("Should work with restocks", function () {
+            assert.deepEqual(diff_1.diffArrs([basic2], [basic1]), [{ type: "restock", variant: variants[0], parent: basic1 }]);
+        });
+        it("Should work with nothing", function () {
+            assert.deepEqual(diff_1.diffArrs([basic2], [basic2]), []);
+        });
+    });
+    describe("Filtering product arrays", function () {
+        it("Should not filter out common words", function () {
+            console.log(diff_1.filterProducts);
+            assert.deepEqual(diff_1.filterProducts([basic1, basic2], ["item"]), [basic1, basic2]);
+        });
+        it("Should filter out unique words", function () {
+            assert.deepEqual(diff_1.filterProducts([basic1, basic2], ["unreal"]), [basic1]);
+        });
+        it("Should work with multiple words", function () {
+            assert.deepEqual(diff_1.filterProducts([basic1, basic2], ["unreal", "fake"]), [basic1, basic2]);
+        });
+        it("Should work with tags", function () {
+            assert.deepEqual(diff_1.filterProducts([basic1, basic2], ["category-fake"]), [basic1, basic2]);
+        });
     });
 });
+//# sourceMappingURL=index.spec.js.map

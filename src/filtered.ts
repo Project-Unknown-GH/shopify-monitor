@@ -1,22 +1,22 @@
 import { main } from "./webhook";
 
 const urls = [
-    "https://kith.com/collections/mens-footwear/",
-    "https://undefeated.com/collections/mens-footwear/",
-    "https://www.deadstock.ca/collections/footwear/",
-    "https://nrml.ca/collections/nrml-footwear/",
-    "https://shop.havenshop.com/collections/footwear/",
-    "https://www.socialstatuspgh.com/collections/sneakers/",
-    "https://eflash.doverstreetmarket.com/",
-    "https://www.unknwn.com/collections/footwear/",
-    "https://juicestore.com/collections/footwear/",
-    "https://feature.com/collections/footwear/",
-    "https://www.saintalfred.com/collections/footwear/",
-    "https://www.dtlr.com/collections/men-footwear/",
-    "https://www.trophyroomstore.com/collections/footwear/",
-    "https://www.noirfonce.eu/collections/sneakers/"
+    "https://kith.com/",
+    // "https://undefeated.com/",
+    // "https://www.deadstock.ca/",
+    // "https://nrml.ca/",
+    // "https://shop.havenshop.com/",
+    // "https://www.socialstatuspgh.com/",
+    // "https://eflash.doverstreetmarket.com/",
+    // "https://www.unknwn.com/",
+    // "https://juicestore.com/",
+    // "https://feature.com/",
+    // "https://www.saintalfred.com/",
+    // "https://www.dtlr.com/",
+    // "https://www.trophyroomstore.com/",
+    // "https://www.noirfonce.eu/"
 ];
 
-const webhook = "https://discordapp.com/api/webhooks/715588863904579606/l9ao9OAchPh6wSjCMXD6SgTydGZz83RMccoQYSZyc0tVEa5r8TytENBebES65EaFWMzF";
+const webhook = "https://discord.com/api/webhooks/726921036171444254/brX9g-XWlTDS6CdJwmkE5AUGXx_SDiMsVLj7v7TaHggxRo0Q8vfawZd0mw8KfIt_0QL_";
 
-urls.map(url => setInterval(main, 20000, url, "filtered", [webhook]));
+urls.map(url => setInterval(main, 20000, url, "filtered", [webhook], ["shirt", "footwear"]));
