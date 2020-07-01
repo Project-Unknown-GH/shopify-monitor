@@ -2,12 +2,30 @@ import { compareVariants, Product, Variant } from "./index";
 import axios from "axios";
 import * as fs from "fs";
 import extractSiteNameFromUrl from "./url";
+const httpsProxyAgent = require("https-proxy-agent");
 
 interface Diff {
     type: "restock" | "sellout",
     parent: Product,
     variant: Variant,
     sizes: string[]
+}
+
+const proxies = 
+`51.81.113.251:33128:Ghd897!a305:h1XuOfyf
+51.81.113.246:33128:Ghd897!a89:h1XuOfyf
+51.81.113.243:33128:Ghd897!a227:h1XuOfyf
+51.81.113.242:33128:Ghd897!a90:h1XuOfyf
+51.81.97.116:33128:Ghd897!a454:h1XuOfyf
+51.81.97.123:33128:Ghd897!a487:h1XuOfyf
+51.81.97.118:33128:Ghd897!a52:h1XuOfyf
+51.81.113.251:33128:Ghd897!a324:h1XuOfyf`.split("\n");
+
+const proxyToUrl = (proxy: string) => {
+    const splitProxy = proxy.split(":");
+    const reorganizedProxy = [[splitProxy[2], splitProxy[3]], [splitProxy[0], splitProxy[1]]];
+    const joinedProxy = reorganizedProxy.map(l => l.join(":")).join("@");
+    return `http://${joinedProxy}`;
 }
 
 const diffVariantArr = (arr1: Variant[], arr2: Variant[]): Omit<Diff, "parent"> => {
@@ -57,10 +75,14 @@ const diffArrs = (arr1: Product[], arr2: Product[]): Diff[] => {
 
 const compareData = (header: string, url: string, filters: string[]): Promise<Diff[]> => {
     const extractedUrl = `${header}/${extractSiteNameFromUrl(url)}.json`;
+    const randomProxy = proxyToUrl(proxies[Math.floor(Math.random() * proxies.length)]);
+    console.log(`Proxy: ${randomProxy}`);
+    const agent = new httpsProxyAgent(randomProxy);
     return new Promise(async (resolve, reject) => {
         try {
             await axios({
                 method: "GET",
+	        httpsAgent: agent,
                 url: `${url}products.json?limit=999999999`,
             });
         } catch {
@@ -69,6 +91,7 @@ const compareData = (header: string, url: string, filters: string[]): Promise<Di
         }
         const urlData: any = await axios({
             method: "GET",
+	    httpsAgent: agent,
             url: `${url}products.json?limit=999999999`,
         });
 		    const filteredUrlData = filters.length === 0 ? urlData.data.products : filterProducts(urlData.data.products, filters);
