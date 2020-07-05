@@ -12,7 +12,21 @@ interface Diff {
 }
 
 const proxies = 
-`51.81.113.251:33128:Ghd897!a305:h1XuOfyf
+`
+51.81.97.115:33128:Ghd897!a125:h1XuOfyf
+51.81.97.121:33128:Ghd897!a291:h1XuOfyf
+51.81.113.248:33128:Ghd897!a63:h1XuOfyf
+51.81.113.242:33128:Ghd897!a258:h1XuOfyf
+51.81.113.245:33128:Ghd897!a255:h1XuOfyf
+51.81.113.242:33128:Ghd897!a318:h1XuOfyf
+51.81.113.243:33128:Ghd897!a290:h1XuOfyf
+51.81.97.117:33128:Ghd897!a108:h1XuOfyf
+51.81.97.116:33128:Ghd897!a435:h1XuOfyf
+51.81.97.124:33128:Ghd897!a316:h1XuOfyf
+51.81.97.122:33128:Ghd897!a29:h1XuOfyf
+51.81.113.243:33128:Ghd897!a62:h1XuOfyf
+51.81.97.123:33128:Ghd897!a14:h1XuOfyf
+51.81.113.251:33128:Ghd897!a305:h1XuOfyf
 51.81.113.246:33128:Ghd897!a89:h1XuOfyf
 51.81.113.243:33128:Ghd897!a227:h1XuOfyf
 51.81.113.242:33128:Ghd897!a90:h1XuOfyf
@@ -82,7 +96,7 @@ const compareData = (header: string, url: string, filters: string[]): Promise<Di
         try {
             await axios({
                 method: "GET",
-	        httpsAgent: agent,
+	            httpsAgent: agent,
                 url: `${url}products.json?limit=999999999`,
             });
         } catch {
@@ -91,7 +105,7 @@ const compareData = (header: string, url: string, filters: string[]): Promise<Di
         }
         const urlData: any = await axios({
             method: "GET",
-	    httpsAgent: agent,
+	        httpsAgent: agent,
             url: `${url}products.json?limit=999999999`,
         });
 		    const filteredUrlData = filters.length === 0 ? urlData.data.products : filterProducts(urlData.data.products, filters);

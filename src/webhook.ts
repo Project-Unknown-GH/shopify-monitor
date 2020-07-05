@@ -61,17 +61,12 @@ class Embed {
                 },
                 {
                     name: "Size",
-                    value: `${diff.sizes.reduce((acc, cur) => acc + cur + "\n", "")}`,
+                    value: `${diff.sizes.reduce((acc, cur, idx) => acc + `[${cur}](${diff.parent.company_url}cart/${diff.parent.variants[idx].id}:1)` + "\n", "")}`,
                     inline: true,
                 },
                 {
                     name: "Price",
                     value: `$${diff.variant.price}`,
-                    inline: true,
-                },
-                {
-                    name: "Link",
-                    value: `[Click here](${diff.parent.company_url}products/${diff.parent.handle})`,
                     inline: true,
                 },
                 {
@@ -85,7 +80,7 @@ class Embed {
             };
             embeds.push({
                 title,
-		url,
+		        url,
                 color,
                 fields,
                 image,
