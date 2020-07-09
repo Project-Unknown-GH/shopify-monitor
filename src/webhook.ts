@@ -61,7 +61,7 @@ class Embed {
                 },
                 {
                     name: "Size",
-                    value: `${diff.sizes.reduce((acc, cur, idx) => acc + `[${cur}](${diff.parent.company_url}cart/${diff.parent.variants[idx].id}:1)` + "\n", "")}`,
+                    value: `${diff.sizes.reduce((acc, cur, idx) => acc + `[${cur}](${diff.parent.company_url}cart/${diff.parent.variants.filter(l => diff.sizes.includes(l.title))[idx].id}:1)` + "\n", "")}`,
                     inline: true,
                 },
                 {

@@ -96,7 +96,6 @@ const compareData = (header: string, url: string, filters: string[]): Promise<Di
         try {
             await axios({
                 method: "GET",
-	            httpsAgent: agent,
                 url: `${url}products.json?limit=999999999`,
             });
         } catch {
@@ -105,7 +104,6 @@ const compareData = (header: string, url: string, filters: string[]): Promise<Di
         }
         const urlData: any = await axios({
             method: "GET",
-	        httpsAgent: agent,
             url: `${url}products.json?limit=999999999`,
         });
 		    const filteredUrlData = filters.length === 0 ? urlData.data.products : filterProducts(urlData.data.products, filters);
