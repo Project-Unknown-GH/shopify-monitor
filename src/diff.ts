@@ -2,6 +2,7 @@ import { compareVariants, Product, Variant } from "./index";
 import axios from "axios";
 import * as fs from "fs";
 import extractSiteNameFromUrl from "./url";
+import { getProxyUrls } from "./proxy";
 const httpsProxyAgent = require("https-proxy-agent");
 
 interface Diff {
@@ -9,37 +10,6 @@ interface Diff {
     parent: Product,
     variant: Variant,
     sizes: string[]
-}
-
-const proxies = 
-`
-51.81.97.115:33128:Ghd897!a125:h1XuOfyf
-51.81.97.121:33128:Ghd897!a291:h1XuOfyf
-51.81.113.248:33128:Ghd897!a63:h1XuOfyf
-51.81.113.242:33128:Ghd897!a258:h1XuOfyf
-51.81.113.245:33128:Ghd897!a255:h1XuOfyf
-51.81.113.242:33128:Ghd897!a318:h1XuOfyf
-51.81.113.243:33128:Ghd897!a290:h1XuOfyf
-51.81.97.117:33128:Ghd897!a108:h1XuOfyf
-51.81.97.116:33128:Ghd897!a435:h1XuOfyf
-51.81.97.124:33128:Ghd897!a316:h1XuOfyf
-51.81.97.122:33128:Ghd897!a29:h1XuOfyf
-51.81.113.243:33128:Ghd897!a62:h1XuOfyf
-51.81.97.123:33128:Ghd897!a14:h1XuOfyf
-51.81.113.251:33128:Ghd897!a305:h1XuOfyf
-51.81.113.246:33128:Ghd897!a89:h1XuOfyf
-51.81.113.243:33128:Ghd897!a227:h1XuOfyf
-51.81.113.242:33128:Ghd897!a90:h1XuOfyf
-51.81.97.116:33128:Ghd897!a454:h1XuOfyf
-51.81.97.123:33128:Ghd897!a487:h1XuOfyf
-51.81.97.118:33128:Ghd897!a52:h1XuOfyf
-51.81.113.251:33128:Ghd897!a324:h1XuOfyf`.split("\n");
-
-const proxyToUrl = (proxy: string) => {
-    const splitProxy = proxy.split(":");
-    const reorganizedProxy = [[splitProxy[2], splitProxy[3]], [splitProxy[0], splitProxy[1]]];
-    const joinedProxy = reorganizedProxy.map(l => l.join(":")).join("@");
-    return `http://${joinedProxy}`;
 }
 
 const diffVariantArr = (arr1: Variant[], arr2: Variant[]): Omit<Diff, "parent"> => {
@@ -79,7 +49,7 @@ const diffArrs = (arr1: Product[], arr2: Product[]): Diff[] => {
     for (const i in arr1) {
         const variantDiff = diffVariantArr(arr1[i].variants.sort((a, b) => a.id - b.id), arr2[i].variants.sort((a, b) => a.id - b.id));
         if (variantDiff) {
-            const fullDiff: Diff = {...variantDiff, parent: arr2[i]};
+            const fullDiff: Diff = { ...variantDiff, parent: arr2[i] };
             diffs.push(fullDiff);
         }
     }
@@ -89,10 +59,11 @@ const diffArrs = (arr1: Product[], arr2: Product[]): Diff[] => {
 
 const compareData = (header: string, url: string, filters: string[]): Promise<Diff[]> => {
     const extractedUrl = `${header}/${extractSiteNameFromUrl(url)}.json`;
-    const randomProxy = proxyToUrl(proxies[Math.floor(Math.random() * proxies.length)]);
-    console.log(`Proxy: ${randomProxy}`);
-    const agent = new httpsProxyAgent(randomProxy);
     return new Promise(async (resolve, reject) => {
+        const proxies = await getProxyUrls();
+        const randomProxy = proxies[Math.floor(Math.random() * proxies.length)]
+        console.log(`Proxy: ${randomProxy}`);
+        const agent = new httpsProxyAgent(randomProxy);
         try {
             await axios({
                 method: "GET",
@@ -106,17 +77,17 @@ const compareData = (header: string, url: string, filters: string[]): Promise<Di
             method: "GET",
             url: `${url}products.json?limit=999999999`,
         });
-		    const filteredUrlData = filters.length === 0 ? urlData.data.products : filterProducts(urlData.data.products, filters);
-        const parsedUrlData: Product[] = filteredUrlData.sort((a, b) => a.id - b.id).map(l => ({...l, company_url: url}));
+        const filteredUrlData = filters.length === 0 ? urlData.data.products : filterProducts(urlData.data.products, filters);
+        const parsedUrlData: Product[] = filteredUrlData.sort((a, b) => a.id - b.id).map(l => ({ ...l, company_url: url }));
         if (fs.existsSync(extractedUrl)) {
             fs.readFile(extractedUrl, "utf-8", (err, data) => {
                 if (err) throw err;
                 try {
                     const parsedData = JSON.parse(data);
-                    const parsedOldData = parsedData.sort((a, b) => a.id - b.id).map(l => ({...l, company_url: url}));
+                    const parsedOldData = parsedData.sort((a, b) => a.id - b.id).map(l => ({ ...l, company_url: url }));
                     if (checkRewrite(parsedOldData, filteredUrlData)) {
                         fs.writeFile(extractedUrl, JSON.stringify(filteredUrlData, null, 4), (err) => {
-			    console.log("diff lengths");
+                            console.log("diff lengths");
                             if (err) throw err;
                         });
                         resolve([]);
