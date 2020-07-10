@@ -116,7 +116,7 @@ const compareData = (header: string, url: string, filters: string[]): Promise<Di
 };
 
 export const filterProducts = (products: Product[], filters: string[]) => {
-    return products.filter(l => l.title.split(" ").some(j => filters.map(l => l.toLowerCase()).includes(j.toLowerCase())) || l.tags.some(j => filters.includes(j)));
+    return products.filter(l => filters.some(j => l.title.toLowerCase().includes(j)) || l.tags.some(j => filters.includes(j)));
 }
 
 export { diffArrs, diffVariantArr, compareData, Diff };
