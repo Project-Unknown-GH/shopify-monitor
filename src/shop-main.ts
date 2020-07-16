@@ -1,4 +1,5 @@
 import { main } from "./webhook";
+import { Webhooks } from "./urls";
 
 const webhookUrls = <string[][]>[
     ["https://undefeated.com/", "https://discordapp.com/api/webhooks/716362702192377856/LhHQfaiC24w4urcH7tmkoAodQvvXx594pKLrRCBeHjfEvmtsSfayR-Dk5ppSPjUK74LD"],
@@ -31,4 +32,4 @@ const webhookUrls = <string[][]>[
 
 console.log("Starting!");
 
-webhookUrls.map(url => setInterval(main, 30000, url[0], "products", ["https://discordapp.com/api/webhooks/710813058284519466/7NfyY_-rh6JinUBEuAMsn9QWPlZzbndTNi-CgF-WY9khfjsEcxOgESTbcwYtHDJ_wSSS", url[1] ? url[1] : undefined]));
+webhookUrls.map(url => setInterval(main, 30000, url[0], "products", [Webhooks.UNFILTERED, url[1] ? url[1] : undefined]));
