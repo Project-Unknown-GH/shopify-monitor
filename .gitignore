@@ -5,3 +5,4 @@ src/filtered
 src/cmd
 src/**/*.js
 src/**/*.js.map
+dist/
