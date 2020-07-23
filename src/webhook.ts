@@ -70,12 +70,12 @@ class Embed {
                     inline: true,
                 },
                 {
-                    name: "Status",
-                    value: `${diff.variant.available ? "In stock" : "Not in stock"}`,
+                    name: "Stock",
+                    value: `${diff.sizes.length}`,
                     inline: true,
                 },
             ];
-            const image = {
+            const thumbnail = {
                 url: diff.parent.images[0].src
             };
             embeds.push({
@@ -83,7 +83,7 @@ class Embed {
 		        url,
                 color,
                 fields,
-                image,
+                thumbnail,
                 footer
             });
         }
