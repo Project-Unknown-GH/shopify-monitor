@@ -28,4 +28,4 @@ const webhook = Webhooks.FILTERED;
 
 const filters = "space hippie, yeezy, dunk, jordan 1 high, air force tiger, comme dunk low, cdg dunk low, travis scott, cactus jack, flint, south korea, yzy qntm, yeezy barium, 700 mnvm, yeezy 700, jordan 1 light smoke, jordan 1 smoke, smoke, yzy"
 
-urls.map(url => setInterval(main, 20000, url, "filtered", [webhook], filters.split(", ")));
+urls.map(url => setInterval(main, 5000, url, "filtered", [webhook], filters.split(", ")));

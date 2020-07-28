@@ -32,4 +32,4 @@ const webhookUrls = <string[][]>[
 
 console.log("Starting!");
 
-webhookUrls.map(url => setInterval(main, 30000, url[0], "products", [Webhooks.UNFILTERED, url[1] ? url[1] : undefined]));
+webhookUrls.map(url => setInterval(main, 5000, url[0], "products", [Webhooks.UNFILTERED, url[1] ? url[1] : undefined]));
