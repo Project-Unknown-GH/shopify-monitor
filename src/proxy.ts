@@ -1,11 +1,18 @@
-import axios from "axios";
+import * as fs from "fs";
+
+const getProxyUrlsRaw = (): Promise<string[]> => {
+    return new Promise(res => {
+        fs.readFile("proxies.txt", "utf-8", (err, data) => {
+            if (err) throw err;
+            const splitData = data.split("\n");
+            res(splitData.map(proxyToUrl));
+        })
+    })    
+};
 
 export const getProxyUrls = async () => {
-    const response = await axios({
-        method: "GET",
-        url: "https://api.projectunkn.com/api/proxies/"
-    });
-    return response.data.map(l => l.proxy).map(proxyToUrl);
+    const response = await getProxyUrlsRaw();
+    return response.map(proxyToUrl);
 }
 
 const proxyToUrl = (proxy: string) => {

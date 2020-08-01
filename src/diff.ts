@@ -67,7 +67,7 @@ const compareData = (header: string, url: string, filters: string[]): Promise<Di
         try {
             await axios({
                 method: "GET",
-                httpsAgent: agent,
+                // httpsAgent: agent,
                 url: `${url}products.json?limit=999999999`,
             });
         } catch {
@@ -76,7 +76,7 @@ const compareData = (header: string, url: string, filters: string[]): Promise<Di
         }
         const urlData: any = await axios({
             method: "GET",
-            httpsAgent: agent,
+            // httpsAgent: agent,
             url: `${url}products.json?limit=999999999`,
         });
         const filteredUrlData = filters.length === 0 ? urlData.data.products : filterProducts(urlData.data.products, filters);
@@ -110,6 +110,9 @@ const compareData = (header: string, url: string, filters: string[]): Promise<Di
             });
         } else {
             console.log("nonexistent");
+            if (!fs.existsSync(header)) {
+                fs.mkdirSync(header);
+            }
             fs.writeFile(extractedUrl, JSON.stringify(filteredUrlData, null, 4), (err) => {
                 if (err) throw err;
             });
